@@ -1006,7 +1006,13 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
 	max_dsc_rate_per_lane =
 		hdmi->dsc_cap.max_frl_rate_per_lane;
 
-	if (mode.clock >= HDMI_8K60_RATE &&
+	if (mode.hdisplay == 5088 || mode.hdisplay == 3840){
+		hdmi->link_cfg.dsc_mode = true;
+		hdmi->link_cfg.frl_lanes = max_dsc_lanes;
+		hdmi->link_cfg.rate_per_lane = max_dsc_rate_per_lane;
+
+        printk(KERN_INFO "rockchip-hdmi: Forced DSC MODE enabled for BigScreenBeyond!\n");
+	} else if (mode.clock >= HDMI_8K60_RATE &&
 	    !hdmi_bus_fmt_is_yuv420(hdmi->bus_format) &&
 	    !hdmi_bus_fmt_is_yuv422(hdmi->bus_format)) {
 		hdmi->link_cfg.dsc_mode = true;
