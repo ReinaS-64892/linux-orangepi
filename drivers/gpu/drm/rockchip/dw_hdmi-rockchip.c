@@ -991,7 +991,7 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
 	hdmi->link_cfg.rate_per_lane = max_rate_per_lane;
 	hdmi->link_cfg.add_func = hdmi->add_func;
 
-	if (mode.hdisplay == 5088 || mode.hdisplay == 3840){
+	if (mode.hdisplay == 5088){
         printk(KERN_INFO "rockchip-hdmi: BSB mode detected (%dx%d), skipping TMDS fallback forcing FRL/DSC!\n", mode.hdisplay, mode.vdisplay);
 		
         hdmi->dsc_cap.v_1p2 = true;
@@ -1020,7 +1020,7 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
 	max_dsc_rate_per_lane =
 		hdmi->dsc_cap.max_frl_rate_per_lane;
 
-	if (mode.hdisplay == 5088 || mode.hdisplay == 3840){
+	if (mode.hdisplay == 5088){
 		hdmi->link_cfg.dsc_mode = true;
 		hdmi->link_cfg.frl_lanes = max_dsc_lanes;
 		hdmi->link_cfg.rate_per_lane = max_dsc_rate_per_lane;

@@ -7830,7 +7830,7 @@ vop2_crtc_mode_valid(struct drm_crtc *crtc, const struct drm_display_mode *mode)
 	int clock;
 	uint8_t active_vp_mask = vop2->active_vp_mask;
 
-	if (mode->hdisplay == 5088 || mode->hdisplay == 3840) {
+	if (mode->hdisplay == 5088) {
 		printk(KERN_INFO "rockchip-hdmi: BSB mode detected (%dx%d), bypassing dw-hdmi mode_valid check!\n", 
 		       mode->hdisplay, mode->vdisplay);
 		return MODE_OK;
