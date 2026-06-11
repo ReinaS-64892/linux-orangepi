@@ -381,6 +381,17 @@ static int rockchip_rk3588_drm_dclk_set_rate(struct clk *dclk, unsigned long rat
 			clk_set_rate(dclk, rate);
 		}
 	} else {
+		if (rate == 251150500 || rate == 179527750) {
+            unsigned long bsb_parent_rate;
+            
+            bsb_parent_rate = rate * 4; 
+            
+            printk(KERN_INFO "rockchip-vop2: BSB undetected clock fix! Forcing parent %s rate to %lu\n",
+                   name, bsb_parent_rate);
+                   
+            clk_set_rate(p_hw->clk, bsb_parent_rate);
+        }
+        
 		clk_set_rate(dclk, rate);
 	}
 
