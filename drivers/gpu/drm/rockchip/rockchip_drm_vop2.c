@@ -9045,8 +9045,12 @@ static void vop2_setup_dual_channel_if(struct drm_crtc *crtc)
 	    !vop2_mark_as_left_panel(vcstate, VOP_OUTPUT_IF_eDP0))
 		VOP_CTRL_SET(vop2, edp0_data1_sel, 1);
 	if (vcstate->output_if & VOP_OUTPUT_IF_HDMI0 &&
-	    !vop2_mark_as_left_panel(vcstate, VOP_OUTPUT_IF_HDMI0))
+	    !vop2_mark_as_left_panel(vcstate, VOP_OUTPUT_IF_HDMI0)){
 		VOP_CTRL_SET(vop2, hdmi0_data1_sel, 1);
+		
+		VOP_CTRL_SET(vop2, hdmi_dual_en, 1); 
+    	printk(KERN_INFO "[BSB] Applied hdmi_dual_en for HDMI0\n");
+	}
 	if (vcstate->output_if & VOP_OUTPUT_IF_MIPI0 &&
 	    !vop2_mark_as_left_panel(vcstate, VOP_OUTPUT_IF_MIPI0))
 		VOP_CTRL_SET(vop2, mipi0_data1_sel, 1);
