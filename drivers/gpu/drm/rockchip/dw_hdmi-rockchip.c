@@ -998,8 +998,6 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
         hdmi->dsc_cap.bpc_supported = 8; 
         hdmi->dsc_cap.max_slices = 4;
         hdmi->dsc_cap.all_bpp = false;
-        hdmi->dsc_cap.max_lanes = 4;
-        hdmi->dsc_cap.max_frl_rate_per_lane = 4;
 	} else if (!max_frl_rate || (tmdsclk < HDMI20_MAX_RATE && mode.clock < HDMI20_MAX_RATE)) {
 		//dev_info(hdmi->dev, "use tmds mode\n");
         printk(KERN_INFO "use tmds mode\n");
