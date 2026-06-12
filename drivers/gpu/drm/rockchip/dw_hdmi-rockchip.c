@@ -995,7 +995,6 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
         printk(KERN_INFO "rockchip-hdmi: BSB mode detected (%dx%d), skipping TMDS fallback forcing FRL/DSC!\n", mode.hdisplay, mode.vdisplay);
 		hdmi->dsc_cap.v_1p2 = true;
 
-        hdmi->dsc_cap.bpc_supported = 8; 
         hdmi->dsc_cap.max_slices = 4;
         hdmi->dsc_cap.all_bpp = false;
 	} else if (!max_frl_rate || (tmdsclk < HDMI20_MAX_RATE && mode.clock < HDMI20_MAX_RATE)) {
