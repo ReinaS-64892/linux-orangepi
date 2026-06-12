@@ -24,6 +24,7 @@
 #include <drm/drm_of.h>
 #include <drm/drm_probe_helper.h>
 #include <drm/drm_simple_kms_helper.h>
+#include <drm/display/drm_dsc_helper.h>
 
 #include <video/display_timing.h>
 #include <video/videomode.h>
@@ -1257,27 +1258,44 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
 	int i;
 
 	if (pic_width == 5088) {
-        printk(KERN_INFO "rockchip-hdmi: [BSB] Bypassing PPS table search! Injecting custom DSC active timing...\n");
-        
-        memcpy(hdmi->link_cfg.pps_payload, pps_datas[0].raw_pps, 128);
-        
-        hdmi->link_cfg.pps_payload[0] = 0x09;
-        hdmi->link_cfg.pps_payload[1] = 0xF0;
-        
-        hdmi->link_cfg.pps_payload[2] = 0x13;
-        hdmi->link_cfg.pps_payload[3] = 0xE0;
-        
-        hdmi->link_cfg.pps_payload[4] = 0x09;
-        hdmi->link_cfg.pps_payload[5] = 0xF0;
-        
-        hdmi->link_cfg.pps_payload[6] = 0x04;
-        hdmi->link_cfg.pps_payload[7] = 0xF8;
+		struct drm_dsc_config bsb_dsc_cfg = { 0 };
+        struct drm_dsc_pps_infoframe pps_infoframe = { 0 };
+        int ret_rc;
 
-        hdmi->link_cfg.pps_payload[5] = 0x80;
+        printk(KERN_INFO "rockchip-hdmi: [BSB] Generating official DSC parameters via DRM core...\n");
+
+        bsb_dsc_cfg.dsc_version_major = 1;
+        bsb_dsc_cfg.dsc_version_minor = 2;
+        bsb_dsc_cfg.pic_width = 5088;
+        bsb_dsc_cfg.pic_height = 2544;
+        bsb_dsc_cfg.slice_width = 1272;   
+        bsb_dsc_cfg.slice_height = 2544;  
+        bsb_dsc_cfg.slice_count = 4;
+        bsb_dsc_cfg.bits_per_component = 8; 
+        bsb_dsc_cfg.bits_per_pixel = 128;   
+        bsb_dsc_cfg.convert_rgb = true;     
+
+        bsb_dsc_cfg.rc_model_size = DSC_RC_MODEL_SIZE_9400;
+        bsb_dsc_cfg.rc_edge_factor = 6;
+        bsb_dsc_cfg.rc_quant_incr_limit0 = 11;
+        bsb_dsc_cfg.rc_quant_incr_limit1 = 11;
+        bsb_dsc_cfg.initial_xmit_delay = 512;
+        bsb_dsc_cfg.initial_scale_value = 32;
+        bsb_dsc_cfg.mux_word_size = DSC_MUX_WORD_SIZE_48_BITS;
+
+        ret_rc = drm_dsc_compute_rc_parameters(&bsb_dsc_cfg);
+        if (ret_rc) {
+            dev_err(hdmi->dev, "BSB: Failed to compute RC parameters: %d\n", ret_rc);
+            return ret_rc;
+        }
+
+        drm_dsc_pps_payload_pack(&pps_infoframe, &bsb_dsc_cfg);
+
+        memcpy(hdmi->link_cfg.pps_payload, &pps_infoframe.pps_payload, 128);
 
         hdmi->link_cfg.hcactive = DIV_ROUND_UP(slice_width * (128 / 16), 8) * (pic_width / slice_width);
-        
-        printk(KERN_INFO "rockchip-hdmi: [BSB] Crafted custom PPS payload for Beyond successfully.\n");
+
+        printk(KERN_INFO "rockchip-hdmi: [BSB] DRM core generation success! hcactive = %d\n", hdmi->link_cfg.hcactive);
         return 0;
     }
 
