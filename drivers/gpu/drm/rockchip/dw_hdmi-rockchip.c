@@ -1275,13 +1275,13 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
         bsb_dsc_cfg.bits_per_pixel = 128;   
         bsb_dsc_cfg.convert_rgb = true;     
 
-        bsb_dsc_cfg.rc_model_size = DSC_RC_MODEL_SIZE_9400;
+        bsb_dsc_cfg.rc_model_size = DSC_RC_MODEL_SIZE_CONST;
         bsb_dsc_cfg.rc_edge_factor = 6;
         bsb_dsc_cfg.rc_quant_incr_limit0 = 11;
         bsb_dsc_cfg.rc_quant_incr_limit1 = 11;
         bsb_dsc_cfg.initial_xmit_delay = 512;
         bsb_dsc_cfg.initial_scale_value = 32;
-        bsb_dsc_cfg.mux_word_size = DSC_MUX_WORD_SIZE_48_BITS;
+        bsb_dsc_cfg.mux_word_size = 48;
 
         ret_rc = drm_dsc_compute_rc_parameters(&bsb_dsc_cfg);
         if (ret_rc) {
@@ -1289,9 +1289,7 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
             return ret_rc;
         }
 
-        drm_dsc_pps_payload_pack(&pps_infoframe, &bsb_dsc_cfg);
-
-        memcpy(hdmi->link_cfg.pps_payload, &pps_infoframe.pps_payload, 128);
+		drm_dsc_pps_payload_pack((void *)hdmi->link_cfg.pps_payload, &bsb_dsc_cfg);
 
         hdmi->link_cfg.hcactive = DIV_ROUND_UP(slice_width * (128 / 16), 8) * (pic_width / slice_width);
 
