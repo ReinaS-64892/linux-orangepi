@@ -9386,6 +9386,7 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_sta
 	kfree(output_if_string);
 
 	if (adjusted_mode->hdisplay > VOP2_MAX_VP_OUTPUT_WIDTH) {
+		printk(KERN_INFO "rockchip-vop2: adjusted_mode->hdisplay > VOP2_MAX_VP_OUTPUT_WIDTH is true\n");
 		vcstate->splice_mode = true;
 		splice_vp = &vop2->vps[vp_data->splice_vp_id];
 		splice_vp->splice_mode_right = true;
@@ -9400,9 +9401,10 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_sta
 	if (vcstate->dsc_enable) {
 		int k = 1;
 
-		if (vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CHANNEL_LEFT_RIGHT_MODE)
+		if (vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CHANNEL_LEFT_RIGHT_MODE){
 			k = 2;
-
+			printk(KERN_INFO "rockchip-vop2: vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CHANNEL_LEFT_RIGHT_MODE is true\n");
+		}
 		vcstate->dsc_id = vcstate->output_if & (VOP_OUTPUT_IF_MIPI0 | VOP_OUTPUT_IF_HDMI0) ? 0 : 1;
 		vcstate->dsc_slice_num = hdisplay / dsc_sink_cap->slice_width / k;
 		vcstate->dsc_pixel_num = vcstate->dsc_slice_num > 4 ? 4 : vcstate->dsc_slice_num;
