@@ -3491,7 +3491,6 @@ static void dw_hdmi_qp_bridge_atomic_enable(struct drm_bridge *bridge,
 
 	if (link_cfg && link_cfg->frl_mode){
 		queue_work(hdmi->workqueue, &hdmi->flt_work);
-		flush_work(&hdmi->flt_work);
 	}
 	
 	if (!hdmi->dclk_en) {
