@@ -1313,6 +1313,20 @@ static void dw_hdmi_qp_dsc_configure(struct rockchip_hdmi *hdmi,
 		return;
 	
 	if (crtc_state->mode.hdisplay == 5088) {
+        printk(KERN_INFO "--------------------------------------------------\n");
+        printk(KERN_INFO "rockchip-hdmi: [BSB DSC DEBUG]\n");
+        printk(KERN_INFO "  hdisplay      = %d\n", crtc_state->mode.hdisplay);
+        printk(KERN_INFO "  vdisplay      = %d\n", crtc_state->mode.vdisplay);
+        printk(KERN_INFO "  slice_count   = %d (Expected: 4)\n", slice_count);
+        printk(KERN_INFO "  slice_width   = %d (Expected: 1272)\n", slice_width);
+        printk(KERN_INFO "  slice_height  = %d\n", slice_height);
+        printk(KERN_INFO "  bits_per_pixel_RAW = %d\n", bits_per_pixel);
+        printk(KERN_INFO "  calculated bpp     = %d.%d bpp\n", bits_per_pixel / 16, ((bits_per_pixel % 16) * 10) / 16);
+        printk(KERN_INFO "  output_bus_fmt_depth = %d\n", depth);
+        printk(KERN_INFO "--------------------------------------------------\n");
+    }
+
+	if (crtc_state->mode.hdisplay == 5088) {
 		printk(KERN_INFO "rockchip-hdmi: Overriding DSC params for BigScreen Beyond!\n");
 		slice_count = 4;
 		slice_width = 1272;
