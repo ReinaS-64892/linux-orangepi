@@ -3512,6 +3512,12 @@ static void dw_hdmi_qp_bridge_atomic_enable(struct drm_bridge *bridge,
 		drm_panel_enable(hdmi->panel);
 
 	dw_hdmi_qp_hdcp_enable(hdmi, hdmi->curr_conn->state);
+
+	if (link_cfg && link_cfg->frl_mode) {
+        printk(KERN_INFO "rockchip-hdmi: BSB mode - holding atomic_enable until FRL link is fully established...\n");
+        flush_work(&hdmi->flt_work);
+        printk(KERN_INFO "rockchip-hdmi: BSB mode - FRL link established, safely exiting atomic_enable.\n");
+    }
 }
 
 static const struct drm_bridge_funcs dw_hdmi_bridge_funcs = {
