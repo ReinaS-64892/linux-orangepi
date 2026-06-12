@@ -1311,6 +1311,15 @@ static void dw_hdmi_qp_dsc_configure(struct rockchip_hdmi *hdmi,
 	bits_per_pixel = dw_hdmi_dsc_bpp(hdmi, slice_count, slice_width);
 	if (!bits_per_pixel)
 		return;
+	
+	if (crtc_state->mode.hdisplay == 5088) {
+		printk(KERN_INFO "rockchip-hdmi: Overriding DSC params for BigScreen Beyond!\n");
+		slice_count = 4;
+		slice_width = 1272;
+		slice_height = 2544;
+		bits_per_pixel = 8;
+	}
+
 
 	ret = dw_hdmi_qp_set_link_cfg(hdmi, crtc_state->mode.hdisplay,
 				      crtc_state->mode.vdisplay, slice_width,
