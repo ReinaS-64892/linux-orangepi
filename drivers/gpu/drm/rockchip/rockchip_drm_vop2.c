@@ -9016,6 +9016,7 @@ static void vop2_setup_dual_channel_if(struct drm_crtc *crtc)
 	struct vop2_video_port *vp = to_vop2_video_port(crtc);
 	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(crtc->state);
 	struct vop2 *vop2 = vp->vop2;
+	printk(KERN_INFO "rockchip-vop2: entering vop2_setup_dual_channel_if\n");
 
 	if (output_if_is_lvds(vcstate->output_if) &&
 	    (vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CHANNEL_ODD_EVEN_MODE)) {
@@ -9030,6 +9031,7 @@ static void vop2_setup_dual_channel_if(struct drm_crtc *crtc)
 	if (vcstate->output_flags & ROCKCHIP_OUTPUT_DATA_SWAP)
 		VOP_MODULE_SET(vop2, vp, dual_channel_swap, 1);
 
+	printk(KERN_INFO "rockchip-vop2: maybe setup dual channel ... ?\n");
 	/*
 	 * For RK3588, at dual_channel/split mode, the DP1/eDP1/HDMI1/MIPI1 data
 	 * only can be from data1[vp left half screen is data0, right half screen
