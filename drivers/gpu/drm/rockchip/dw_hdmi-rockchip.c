@@ -1256,6 +1256,17 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
 {
 	int i;
 
+	if (pic_width == 5088) {
+        printk(KERN_INFO "rockchip-hdmi: [BSB] Bypassing PPS table search! Injecting custom DSC active timing...\n");
+        
+        memcpy(hdmi->link_cfg.pps_payload, pps_datas[0].raw_pps, 128);
+        
+        hdmi->link_cfg.hcactive = DIV_ROUND_UP(slice_width * (128 / 16), 8) * (pic_width / slice_width);
+        
+        printk(KERN_INFO "rockchip-hdmi: [BSB] Calculated hcactive = %d\n", hdmi->link_cfg.hcactive);
+        return 0;
+    }
+
 	for (i = 0; i < PPS_TABLE_LEN; i++)
 		if (pic_width == pps_datas[i].pic_width &&
 		    pic_height == pps_datas[i].pic_height &&
@@ -1337,17 +1348,10 @@ bsb_bypass:
         printk(KERN_INFO "  slice_height  = %d\n", slice_height);
         printk(KERN_INFO "  bits_per_pixel_RAW = %d\n", bits_per_pixel);
         printk(KERN_INFO "--------------------------------------------------\n");
-        
-        bits_per_pixel = 8; 
-    }
 
-	if (crtc_state->mode.hdisplay == 5088) {
-		printk(KERN_INFO "rockchip-hdmi: Overriding DSC params for BigScreen Beyond!\n");
-		slice_count = 4;
-		slice_width = 1272;
-		slice_height = 2544;
-		bits_per_pixel = 8;
-	}
+        bits_per_pixel = 128;
+        printk(KERN_INFO " force cet : bits_per_pixel = %d\n", bits_per_pixel);
+    }
 
 
 	ret = dw_hdmi_qp_set_link_cfg(hdmi, crtc_state->mode.hdisplay,
