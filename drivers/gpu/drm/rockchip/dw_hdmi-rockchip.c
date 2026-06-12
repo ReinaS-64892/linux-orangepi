@@ -1261,9 +1261,23 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
         
         memcpy(hdmi->link_cfg.pps_payload, pps_datas[0].raw_pps, 128);
         
+        hdmi->link_cfg.pps_payload[0] = 0x09;
+        hdmi->link_cfg.pps_payload[1] = 0xF0;
+        
+        hdmi->link_cfg.pps_payload[2] = 0x13;
+        hdmi->link_cfg.pps_payload[3] = 0xE0;
+        
+        hdmi->link_cfg.pps_payload[4] = 0x09;
+        hdmi->link_cfg.pps_payload[5] = 0xF0;
+        
+        hdmi->link_cfg.pps_payload[6] = 0x04;
+        hdmi->link_cfg.pps_payload[7] = 0xF8;
+
+        hdmi->link_cfg.pps_payload[5] = 0x80;
+
         hdmi->link_cfg.hcactive = DIV_ROUND_UP(slice_width * (128 / 16), 8) * (pic_width / slice_width);
         
-        printk(KERN_INFO "rockchip-hdmi: [BSB] Calculated hcactive = %d\n", hdmi->link_cfg.hcactive);
+        printk(KERN_INFO "rockchip-hdmi: [BSB] Crafted custom PPS payload for Beyond successfully.\n");
         return 0;
     }
 
