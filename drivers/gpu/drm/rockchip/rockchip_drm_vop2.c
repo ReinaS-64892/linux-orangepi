@@ -9398,6 +9398,9 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_sta
 
 		printk(KERN_INFO "rockchip-vop2: force set ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE\n");
 		vcstate->output_flags |= ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE;
+
+		printk(KERN_INFO "[BSB] Forcing Output Mode to RGB (P888) to avoid YUV420 conflict\n");
+		vcstate->output_mode = ROCKCHIP_OUT_MODE_P888;
 	}
 
 	if (vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE)
