@@ -9395,6 +9395,9 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_sta
 		splice_vp->left_vp = vp;
 		splice_en = 1;
 		vop2->active_vp_mask |= BIT(splice_vp->id);
+
+		printk(KERN_INFO "rockchip-vop2: force set ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE\n");
+		vcstate->output_flags |= ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE;
 	}
 
 	if (vcstate->output_flags & ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE)
