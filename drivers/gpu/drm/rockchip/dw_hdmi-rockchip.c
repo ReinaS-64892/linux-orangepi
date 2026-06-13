@@ -3118,6 +3118,9 @@ dw_hdmi_rockchip_attach_properties(struct drm_connector *connector,
 	struct rockchip_drm_private *private = connector->dev->dev_private;
 	int ret;
 
+	color = MEDIA_BUS_FMT_RGB888_1X24;
+	printk(KERN_INFO "dw_hdmi_rockchip_attach_properties : overide color mode to MEDIA_BUS_FMT_RGB888_1X24 \n");
+
 	parse_bus_format(color, &hdmi->hdmi_output, &hdmi->colordepth);
 
 	hdmi->bus_format = color;
