@@ -1268,9 +1268,9 @@ static int dw_hdmi_qp_set_link_cfg(struct rockchip_hdmi *hdmi,
         bsb_dsc_cfg.dsc_version_minor = 2;
         bsb_dsc_cfg.pic_width = 5088;
         bsb_dsc_cfg.pic_height = 2544;
-        bsb_dsc_cfg.slice_width = 1272;   
+        bsb_dsc_cfg.slice_width = 2544;   
         bsb_dsc_cfg.slice_height = 2544;  
-        bsb_dsc_cfg.slice_count = 4;
+        bsb_dsc_cfg.slice_count = 2;
         bsb_dsc_cfg.bits_per_component = 8; 
         bsb_dsc_cfg.bits_per_pixel = 128;   
         bsb_dsc_cfg.convert_rgb = true;     
