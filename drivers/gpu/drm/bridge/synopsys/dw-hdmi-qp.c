@@ -2534,6 +2534,7 @@ static int dw_hdmi_qp_setup(struct dw_hdmi_qp *hdmi,
 	vmode->mtmdsclock = hdmi_get_tmdsclock(hdmi, vmode->mpixelclock);
 	if (hdmi_bus_fmt_is_yuv420(hdmi->hdmi_data.enc_out_bus_format))
 		vmode->mtmdsclock /= 2;
+	if(mode->hdisplay == 3840 && mode->vdisplay == 1920) vmode->mtmdsclock = vmode->mpixelclock;
 	dev_info(hdmi->dev, "final tmdsclk = %d\n", vmode->mtmdsclock);
 
 	if (hdmi->plat_data->set_grf_cfg)
