@@ -991,11 +991,18 @@ static void hdmi_select_link_config(struct rockchip_hdmi *hdmi,
 	hdmi->link_cfg.rate_per_lane = max_rate_per_lane;
 	hdmi->link_cfg.add_func = hdmi->add_func;
 
+	if(mode.hdisplay == 3840 && mode.vdisplay == 1920) { 
+		printk(KERN_INFO "rockchip hdmi_select_link_config : goto BsbFrlEnabled!\n");
+		goto BsbFrlEnabled; 
+	}
+
 	if (!max_frl_rate || (tmdsclk < HDMI20_MAX_RATE && mode.clock < HDMI20_MAX_RATE)) {
 		//dev_info(hdmi->dev, "use tmds mode\n");
 		hdmi->link_cfg.frl_mode = false;
 		return;
 	}
+
+BsbFrlEnabled:
 
 	hdmi->link_cfg.frl_mode = true;
 
