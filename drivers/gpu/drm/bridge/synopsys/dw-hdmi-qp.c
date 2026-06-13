@@ -1685,7 +1685,8 @@ static void hdmi_config_CVTEM(struct dw_hdmi_qp *hdmi)
 
 	if (!link_cfg->dsc_mode) {
 		dev_info(hdmi->dev, "don't use dsc mode\n");
-		return;
+		// return;
+		printk(KERN_INFO "rockchip hdmi_config_CVTEM blocking fast return, run next codepass!\n");
 	}
 
 	pps_body = link_cfg->pps_payload;
