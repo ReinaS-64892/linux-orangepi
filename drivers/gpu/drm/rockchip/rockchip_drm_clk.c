@@ -381,7 +381,7 @@ static int rockchip_rk3588_drm_dclk_set_rate(struct clk *dclk, unsigned long rat
 			clk_set_rate(dclk, rate);
 		}
 	} else {
-		if (rate == 251150500) {
+		if (rate == 502301000) {
             unsigned long bsb_parent_rate;
             
             bsb_parent_rate = rate * 4; 
