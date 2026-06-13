@@ -1830,6 +1830,12 @@ dw_hdmi_rockchip_mode_valid(struct dw_hdmi *dw_hdmi, void *data,
 	struct drm_crtc *crtc;
 	struct rockchip_hdmi *hdmi;
 
+	if (mode->hdisplay == 3840 && mode->vdisplay == 1920) {
+		printk(KERN_INFO "rockchip-vop2: BSB mode detected (%dx%d), bypassing vop2 mode_valid check!\n", 
+		       mode->hdisplay, mode->vdisplay);
+		return MODE_OK;
+	}
+
 	if (!encoder) {
 		const struct drm_connector_helper_funcs *funcs;
 
