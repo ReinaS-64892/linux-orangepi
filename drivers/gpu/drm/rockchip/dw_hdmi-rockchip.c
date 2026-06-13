@@ -1339,8 +1339,8 @@ static void dw_hdmi_qp_dsc_configure(struct rockchip_hdmi *hdmi,
 		
 		hdmi->dsc_cap.v_1p2 = true; 
 		slice_height = 2544;        
-		slice_count = 4;            
-		slice_width = 1272;         
+		slice_count = 2;            
+		slice_width = 2544;         
 		
 		bits_per_pixel = dw_hdmi_dsc_bpp(hdmi, slice_count, slice_width);
 		
@@ -1380,7 +1380,7 @@ bsb_bypass:
         printk(KERN_INFO "--------------------------------------------------\n");
 
         bits_per_pixel = 128;
-        printk(KERN_INFO " force cet : bits_per_pixel = %d\n", bits_per_pixel);
+        printk(KERN_INFO " override : bits_per_pixel = %d\n", bits_per_pixel);
     }
 
 
