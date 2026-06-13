@@ -9965,7 +9965,6 @@ static int vop2_crtc_atomic_check(struct drm_crtc *crtc,
 			splice_vp = &vop2->vps[vp_data->splice_vp_id];
 			splice_vp->splice_mode_right = true;
 			splice_vp->left_vp = vp;
-			printk(KERN_INFO "rockchip-vop2: do vcstate->splice_mode = true at vop2_crtc_atomic_check!\n");
 		}
 	}
 
